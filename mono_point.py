@@ -28,15 +28,18 @@ for tag in form.find_elements_by_tag_name('input'):
 		tag.submit()
 		break
 
-
 ul_tag = driver.find_element_by_css_selector("ul#timeline")
 items = ul_tag.find_elements_by_tag_name("li")
 
 links = []
+cnt = 1
 for item in items:
+	if cnt > 10:
+		break
 	atag = item.find_element_by_tag_name("a")
 	href = atag.get_attribute('href')
 	links.append(str(href))
+	cnt += 1
 
 for link in links:
 	print(link)
@@ -47,3 +50,5 @@ for link in links:
 		continue
 
 	monow_point.click()
+
+driver.quit()

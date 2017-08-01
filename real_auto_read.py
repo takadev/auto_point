@@ -33,9 +33,12 @@ a_list = sec.find_elements_by_tag_name("a")
 links = []
 cnt = 1
 for tag in a_list:
-	if cnt > 15:
+	if cnt > 5:
 		break
 	cls = tag.get_attribute("class")
+	if str(cls) == "":
+		continue
+
 	if str(cls).find('unable') > -1:
 		continue
 
@@ -48,5 +51,12 @@ for link in links:
 	driver.get(link)
 	driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 	sleep(1)
+	try:
+		sec_tag = driver.find_element_by_css_selector("section#complete")
+		element = sec_tag.find_element_by_css_selector("a.modal-close")
+		driver.execute_script("arguments[0].click();", element)
+		sleep(1)
+	except NoSuchElementException:
+		pass
 
 driver.quit()
