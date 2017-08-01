@@ -1,11 +1,11 @@
 import sys
-import ConfigParser
+import configparser
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from time import sleep
 
-inifile = ConfigParser.SafeConfigParser()
+inifile = configparser.SafeConfigParser()
 inifile.read('./config.ini')
 mail = inifile.get('settings', 'id')
 passwd = inifile.get('settings', 'pass')
