@@ -52,11 +52,16 @@ for link in links:
 	sleep(1)
 
 	driver.switch_to.window(driver.window_handles[1])
-	div_tag = driver.find_element_by_css_selector("div.article")
-	airtcle = div_tag.find_element_by_css_selector("div.article-read-more")
-	a_tag = airtcle.find_element_by_tag_name("a")
-	href = a_tag.get_attribute('href')
-	driver.get(href)
+	try:
+		div_tag = driver.find_element_by_css_selector("div.article")
+		airtcle = div_tag.find_element_by_css_selector("div.article-read-more")
+		a_tag = airtcle.find_element_by_tag_name("a")
+		href = a_tag.get_attribute('href')
+		driver.get(href)
+	except NoSuchElementException:
+		pass
+
 	driver.close()
+	driver.switch_to.window(driver.window_handles[0])
 
 driver.quit()
