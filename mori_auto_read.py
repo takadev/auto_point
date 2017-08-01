@@ -34,33 +34,29 @@ for tag in a_list:
 	href = tag.get_attribute('href')
 	links.append(str(href))
 
-print(len(links))
 for link in links:
 	print(link)
 	driver.get(link)
-	
-	"""
-	try:
-		button = driver.find_element_by_css_selector("div.feature__button")
-		span = button.find_element_by_css_selector("span.button--close")
-		print("AD")
-	except NoSuchElementException:
-		print()
-	"""
 
 	ul_tag = driver.find_element_by_css_selector("ul.new__list")
 	li_tag = ul_tag.find_elements_by_tag_name("li")[0]
 	a_tag = li_tag.find_element_by_tag_name("a")
 	href = a_tag.get_attribute('href')
 	driver.get(href)
+	sleep(1)
 
 	sec = driver.find_element_by_css_selector("section.entrance")
 	div_tag = sec.find_element_by_css_selector("div.button__layer")
-	div_tag.find_element_by_tag_name("a").click()
-	
-	div_tag = tab_page.find_element_by_css_selector("div.article-read-more")
-	a_tag = div_tag.find_element_by_tag_name("a")
+	element = div_tag.find_element_by_tag_name("a")
+	driver.execute_script("arguments[0].click();", element)
+	sleep(1)
+
+	driver.switch_to.window(driver.window_handles[1])
+	div_tag = driver.find_element_by_css_selector("div.article")
+	airtcle = div_tag.find_element_by_css_selector("div.article-read-more")
+	a_tag = airtcle.find_element_by_tag_name("a")
 	href = a_tag.get_attribute('href')
 	driver.get(href)
+	driver.close()
 
 driver.quit()
