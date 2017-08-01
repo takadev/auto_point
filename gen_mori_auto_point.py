@@ -3,6 +3,7 @@ import configparser
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
 inifile = configparser.SafeConfigParser()
@@ -26,21 +27,40 @@ for tag in form.find_elements_by_tag_name('input'):
 		tag.submit()
 		break
 
-sleep(1)
 forest_url = "http://www.gendama.jp/forest/"
 driver.get(forest_url)
-sec = driver.find_element_by_css_selector("section.article")
-ul_tag = sec.find_element_by_tag_name("ul")
-li_tags = ul_tag.find_elements_by_tag_name("li")
 
+forest = driver.find_element_by_css_selector("div#forestBox")
+div_tags = forest.find_elements_by_tag_name("div")
+for tag in div_tags:
+	if str(tag.get_attribute('id')) != "":
+		continue
+	if str(tag.get_attribute('class')) != "":
+		continue
+
+	try:
+		a_tag = tag.find_element_by_tag_name("a")
+		img_tag = a_tag.find_element_by_tag_name("img")
+		src = img_tag.get_attribute('src')
+		if str(src).find('star.gif') == -1:
+			continue
+
+		driver.execute_script("arguments[0].click();", a_tag)
+		break
+
+	except NoSuchElementException:
+		continue
+
+
+osusume = forest.find_element_by_css_selector("div#osusumemori")
+boxes = osusume.find_elements_by_css_selector("div.osusume_box")
 links = []
-for tag in li_tags:
+for tag in boxes:
 	a_tag = tag.find_element_by_tag_name("a")
 	links.append(str(a_tag.get_attribute('href')))
 
 for link in links:
+	print(link)
 	driver.get(link)
-	ul_tag = driver.find_element_by_css_selector("ul.new__list")
-	li_tag = ul_tag.find_elements_by_tag_name("li")[0]
-	a_tag = li_tag.find_element_by_tag_name("a")
-	driver.get(a_tag.get_attribute('href'))
+
+driver.quit()
