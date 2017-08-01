@@ -1,14 +1,17 @@
 import sys
+import ConfigParser
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
+inifile = ConfigParser.SafeConfigParser()
+inifile.read('./config.ini')
+mail = inifile.get('settings', 'id')
+passwd = inifile.get('settings', 'pass')
 url = "http://monow.jp/"
 login_url = "http://ssl.realworld.jp/auth/?site=monow_jp&goto=http%3A%2F%2Fmonow.jp%2F&control=http%3A%2F%2Fmonow.jp%2Frws_session"
-mail = "nontan20xx@gmail.com"
-passwd = "a4Gwfd8K"
 
 driver = webdriver.Chrome('./chromedriver')
 driver.get(login_url)

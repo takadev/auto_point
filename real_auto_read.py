@@ -1,12 +1,15 @@
 import sys
+import ConfigParser
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from time import sleep
 
+inifile = ConfigParser.SafeConfigParser()
+inifile.read('./config.ini')
+mail = inifile.get('settings', 'id')
+passwd = inifile.get('settings', 'pass')
 login_url = "https://ssl.realworld.jp/auth?goto=http%3A%2F%2Frealworld.jp"
-mail = "nontan20xx@gmail.com"
-passwd = "a4Gwfd8K"
 read_url = "http://realworld.jp/contents/rec"
 
 driver = webdriver.Chrome('./chromedriver')
