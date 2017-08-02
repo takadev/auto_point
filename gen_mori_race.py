@@ -1,7 +1,6 @@
 import sys
 import configparser
 from selenium import webdriver
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep
@@ -27,9 +26,28 @@ for tag in form.find_elements_by_tag_name('input'):
 		tag.submit()
 		break
 
+try:
+	div_tag = driver.find_element_by_css_selector("div#race_simple05")
+	element = div_tag.find_element_by_tag_name("a")
+	driver.execute_script("arguments[0].click();", element)
+except NoSuchElementException:
+	pass
 
-div_tag = driver.find_element_by_css_selector("div#race_simple05")
-element = div_tag.find_element_by_tag_name("a")
-driver.execute_script("arguments[0].click();", element)
+sleep(1)
+try:
+	div_tag = driver.find_element_by_css_selector("div#race_simple01")
+	element = div_tag.find_element_by_tag_name("a")
+	driver.execute_script("arguments[0].click();", element)
+except NoSuchElementException:
+	pass
 
-#driver.quit()
+sleep(1)
+try:
+	div_tag = driver.find_element_by_css_selector("div#race_simple02")
+	element = div_tag.find_element_by_tag_name("a")
+	driver.execute_script("arguments[0].click();", element)
+except NoSuchElementException:
+	pass
+
+sleep(1)
+driver.quit()
