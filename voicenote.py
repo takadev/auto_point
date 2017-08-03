@@ -2,6 +2,7 @@ import sys
 import configparser
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
@@ -31,17 +32,22 @@ while True:
 	ul_tag = driver.find_element_by_css_selector("ul.enquete-list")
 	li_tags = ul_tag.find_elements_by_tag_name("li")
 	for tag in li_tags:
-		a_tag = tag.find_element_by_tag_name("a")
-		links.append(str(a_tag.get_attribute('href')))
+		try:
+			a_tag = tag.find_element_by_tag_name("a")
+			links.append(str(a_tag.get_attribute('href')))
+		except NoSuchElementException:
+				break
 
-	break
-	div_tag = driver.find_element_by_css_selector("div.pagination")
-	if first == True:
-		a_tag = div_tag.find_element_by_tag_name("a")
-		driver.get(str(a_tag.get_attribute('href')))
-		first = False
-		sleep(1)
-		continue
+	try:
+		div_tag = driver.find_element_by_css_selector("div.pagination")
+		if first == True:
+			a_tag = div_tag.find_element_by_tag_name("a")
+			driver.get(str(a_tag.get_attribute('href')))
+			first = False
+			sleep(1)
+			continue
+	except NoSuchElementException:
+		break
 
 	a_tags = div_tag.find_elements_by_tag_name("a")
 	if len(a_tags) <= 1:
@@ -66,6 +72,17 @@ for link in links:
 				continue
 			except NoSuchElementException:
 				pass
+
+			try:
+				select = tag.find_element_by_tag_name("select")
+				option = select.find_elements_by_tag_name("option")[1]
+				select_element = Select(select)
+				value = str(option.get_attribute('value'))
+				select_element.select_by_value(value)
+				continue
+			except NoSuchElementException:
+				pass
+
 			try:
 				input = tag.find_element_by_tag_name("input")
 			except NoSuchElementException:
