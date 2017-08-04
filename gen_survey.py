@@ -9,12 +9,12 @@ from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
 inifile = configparser.SafeConfigParser()
-inifile.read('./config.ini')
+inifile.read('/Users/TK/project/auto_point/config.ini')
 mail = inifile.get('settings', 'id')
 passwd = inifile.get('settings', 'pass')
 login_url = "https://ssl.realworld.jp/auth/?site=gendama_jp&rid=&af=&frid=&token=&goto=http%3A%2F%2Fwww.gendama.jp%2Fsurvey%2F"
 
-driver = webdriver.Chrome('./chromedriver')
+driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
 driver.get(login_url)
 form = driver.find_elements_by_tag_name('form')[0]
 for tag in form.find_elements_by_tag_name('input'):

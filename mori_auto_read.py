@@ -7,12 +7,12 @@ from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
 inifile = configparser.SafeConfigParser()
-inifile.read('./config.ini')
+inifile.read('/Users/TK/project/auto_point/config.ini')
 mail = inifile.get('settings', 'id')
 passwd = inifile.get('settings', 'pass')
-login_url = "http://ssl.realworld.jp/auth/?site=service_navi_jp&goto=http%3A%2F%2Fmrga.service-navi.jp%2F"
+login_url = "http://ssl.realworld.jp/auth/?site=service_navi_jp&goto=http%3A%2F%2Fmrga.service-navi.jp%2Fsquare%2Farticles"
 
-driver = webdriver.Chrome('./chromedriver')
+driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
 driver.get(login_url)
 form = driver.find_elements_by_tag_name('form')[0]
 for tag in form.find_elements_by_tag_name('input'):
@@ -27,7 +27,7 @@ for tag in form.find_elements_by_tag_name('input'):
 		tag.submit()
 		break
 
-antena = driver.find_element_by_css_selector("div.antennaList")
+antena = driver.find_element_by_css_selector("div.enquete_box")
 a_list = antena.find_elements_by_tag_name("a")
 links = []
 for tag in a_list:

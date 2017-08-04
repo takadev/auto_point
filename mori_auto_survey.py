@@ -8,14 +8,14 @@ from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
 inifile = configparser.SafeConfigParser()
-inifile.read('./config.ini')
+inifile.read('/Users/TK/project/auto_point/config.ini')
 mail = inifile.get('settings', 'id')
 passwd = inifile.get('settings', 'pass')
 login_url = "http://ssl.realworld.jp/auth/?site=service_navi_jp&goto=http%3A%2F%2Fmrga.service-navi.jp%2F"
 survey_url = "http://mrga.service-navi.jp/square/surveys"
 colum_url = "http://mrga.service-navi.jp/square/columns"
 
-driver = webdriver.Chrome('./chromedriver')
+driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
 driver.get(login_url)
 form = driver.find_elements_by_tag_name('form')[0]
 for tag in form.find_elements_by_tag_name('input'):

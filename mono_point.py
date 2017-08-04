@@ -7,13 +7,13 @@ from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
 inifile = configparser.SafeConfigParser()
-inifile.read('./config.ini')
+inifile.read('/Users/TK/project/auto_point/config.ini')
 mail = inifile.get('settings', 'id')
 passwd = inifile.get('settings', 'pass')
 url = "http://monow.jp/"
 login_url = "http://ssl.realworld.jp/auth/?site=monow_jp&goto=http%3A%2F%2Fmonow.jp%2F&control=http%3A%2F%2Fmonow.jp%2Frws_session"
 
-driver = webdriver.Chrome('./chromedriver')
+driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
 driver.get(login_url)
 form = driver.find_elements_by_tag_name('form')[0]
 for tag in form.find_elements_by_tag_name('input'):
@@ -49,6 +49,6 @@ for link in links:
 	except NoSuchElementException:
 		continue
 
-	monow_point.click()
+	driver.execute_script("arguments[0].click();", monow_point)
 
 driver.quit()

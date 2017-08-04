@@ -7,13 +7,13 @@ from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
 inifile = configparser.SafeConfigParser()
-inifile.read('./config.ini')
+inifile.read('/Users/TK/project/auto_point/config.ini')
 mail = inifile.get('voicenote', 'id')
 passwd = inifile.get('voicenote', 'pass')
 login_url = "http://www.voicenote.jp/"
 url = "http://www.voicenote.jp/mypage/info.php"
 
-driver = webdriver.Chrome('./chromedriver')
+driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
 driver.get(login_url)
 
 form = driver.find_element_by_tag_name('form')

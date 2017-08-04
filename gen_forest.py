@@ -7,12 +7,12 @@ from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
 inifile = configparser.SafeConfigParser()
-inifile.read('./config.ini')
+inifile.read('/Users/TK/project/auto_point/config.ini')
 mail = inifile.get('settings', 'id')
 passwd = inifile.get('settings', 'pass')
-login_url = "https://ssl.realworld.jp/auth/?site=gendama_jp&rid=&af=&frid=&token=&goto=http%3A%2F%2Fwww.gendama.jp%2F?p=start"
+login_url = "https://ssl.realworld.jp/auth/?site=gendama_jp&rid=&af=&frid=&token=&goto=http%3A%2F%2Fwww.gendama.jp%2Fforest%2F"
 
-driver = webdriver.Chrome('./chromedriver')
+driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
 driver.get(login_url)
 form = driver.find_elements_by_tag_name('form')[0]
 for tag in form.find_elements_by_tag_name('input'):
@@ -27,17 +27,8 @@ for tag in form.find_elements_by_tag_name('input'):
 		tag.submit()
 		break
 
-forest_url = "http://www.gendama.jp/forest/"
-driver.get(forest_url)
-
-forest = driver.find_element_by_css_selector("div#forestBox")
-div_tags = forest.find_elements_by_tag_name("div")
+div_tags = driver.find_elements_by_tag_name("div")
 for tag in div_tags:
-	if str(tag.get_attribute('id')) != "":
-		continue
-	if str(tag.get_attribute('class')) != "":
-		continue
-
 	try:
 		a_tag = tag.find_element_by_tag_name("a")
 		img_tag = a_tag.find_element_by_tag_name("img")
@@ -51,7 +42,7 @@ for tag in div_tags:
 	except NoSuchElementException:
 		continue
 
-
+forest = driver.find_element_by_css_selector("div#forestBox")
 osusume = forest.find_element_by_css_selector("div#osusumemori")
 boxes = osusume.find_elements_by_css_selector("div.osusume_box")
 links = []
