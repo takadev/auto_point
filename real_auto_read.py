@@ -1,33 +1,16 @@
 import sys
-import configparser
+import rlogin
 from selenium import webdriver
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
-inifile = configparser.SafeConfigParser()
-inifile.read('/Users/TK/project/auto_point/config.ini')
-mail = inifile.get('settings', 'id')
-passwd = inifile.get('settings', 'pass')
-login_url = "https://ssl.realworld.jp/auth?goto=http%3A%2F%2Frealworld.jp"
-read_url = "http://realworld.jp/contents/rec"
-
 driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
-driver.get(login_url)
-form = driver.find_elements_by_tag_name('form')[0]
-for tag in form.find_elements_by_tag_name('input'):
-	id = tag.get_attribute('id')
-	if id == "rwsid":
-		tag.send_keys(mail)
-	elif id == "pass":
-		tag.send_keys(passwd)
+login_url = "https://ssl.realworld.jp/auth?goto=http%3A%2F%2Frealworld.jp"
+rloginCls = rlogin.Rlogin(login_url, "settings")
+driver = rloginCls.login(driver)
 
-	type = tag.get_attribute('type')
-	if type == 'submit':
-		tag.submit()
-		break
-
+read_url = "http://realworld.jp/contents/rec"
 driver.get(read_url)
 sec = driver.find_element_by_css_selector("section#recommend")
 a_list = sec.find_elements_by_tag_name("a")

@@ -1,5 +1,5 @@
 import sys
-import configparser
+import rlogin
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -7,31 +7,16 @@ from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
-inifile = configparser.SafeConfigParser()
-inifile.read('/Users/TK/project/auto_point/config.ini')
-mail = inifile.get('settings', 'id')
-passwd = inifile.get('settings', 'pass')
+driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
 login_url = "http://ssl.realworld.jp/auth/?site=service_navi_jp&goto=http%3A%2F%2Fmrga.service-navi.jp%2F"
+rloginCls = rlogin.Rlogin(login_url, "settings")
+driver = rloginCls.login(driver)
+
 survey_url = "http://mrga.service-navi.jp/square/surveys"
 colum_url = "http://mrga.service-navi.jp/square/columns"
 
-driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
-driver.get(login_url)
-form = driver.find_elements_by_tag_name('form')[0]
-for tag in form.find_elements_by_tag_name('input'):
-	id = tag.get_attribute('id')
-	if id == "rwsid":
-		tag.send_keys(mail)
-	elif id == "pass":
-		tag.send_keys(passwd)
-
-	type = tag.get_attribute('type')
-	if type == 'submit':
-		tag.submit()
-		break
-
 driver.get(survey_url)
-div_tag = driver.find_element_by_css_selector("div.enqueteBox")
+div_tag = driver.find_element_by_css_selector("div.enquete_box")
 a_tags = div_tag.find_elements_by_tag_name("a")
 links = []
 for tag in a_tags:
@@ -43,7 +28,11 @@ for link in links:
 	sleep(1)
 	driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
 	div_tag = driver.find_element_by_css_selector("div.attention")
-	p_tag = div_tag.find_elements_by_tag_name("p")[1]
+	p_tags = div_tag.find_elements_by_tag_name("p")
+	if len(p_tags) < 2:
+		continue
+
+	p_tag = p_tags[1]
 	span_tag = p_tag.find_element_by_tag_name("span")
 	q_num = int(span_tag.text.replace("問", ""))
 
@@ -78,7 +67,7 @@ for link in links:
 		cnt += 1
 
 driver.get(colum_url)
-div_tag = driver.find_element_by_css_selector("div.enqueteBox")
+div_tag = driver.find_element_by_css_selector("div.enquete_box")
 a_tags = div_tag.find_elements_by_tag_name("a")
 links = []
 for tag in a_tags:
@@ -134,7 +123,6 @@ for link in links:
 	span_tag = div_tag.find_element_by_css_selector("span.now_back")
 	str_num = span_tag.text.replace("ただいま", "")
 	num = int(str_num.replace("問中1問目", ""))
-
 
 	for var in range(num):
 		sleep(1)

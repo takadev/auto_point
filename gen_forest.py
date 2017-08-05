@@ -1,43 +1,33 @@
 import sys
-import configparser
+import rlogin
 from selenium import webdriver
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
-inifile = configparser.SafeConfigParser()
-inifile.read('/Users/TK/project/auto_point/config.ini')
-mail = inifile.get('settings', 'id')
-passwd = inifile.get('settings', 'pass')
-login_url = "https://ssl.realworld.jp/auth/?site=gendama_jp&rid=&af=&frid=&token=&goto=http%3A%2F%2Fwww.gendama.jp%2Fforest%2F"
-
 driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
-driver.get(login_url)
-form = driver.find_elements_by_tag_name('form')[0]
-for tag in form.find_elements_by_tag_name('input'):
-	id = tag.get_attribute('id')
-	if id == "rwsid":
-		tag.send_keys(mail)
-	elif id == "pass":
-		tag.send_keys(passwd)
+login_url = "https://ssl.realworld.jp/auth/?site=gendama_jp&rid=&af=&frid=&token=&goto=http%3A%2F%2Fwww.gendama.jp%2Fforest%2F"
+rloginCls = rlogin.Rlogin(login_url, "settings")
+driver = rloginCls.login(driver)
 
-	type = tag.get_attribute('type')
-	if type == 'submit':
-		tag.submit()
-		break
-
-div_tags = driver.find_elements_by_tag_name("div")
+article = driver.find_element_by_tag_name("article")
+div_tags = article.find_elements_by_tag_name("div")
+find = False
 for tag in div_tags:
 	try:
-		a_tag = tag.find_element_by_tag_name("a")
-		img_tag = a_tag.find_element_by_tag_name("img")
-		src = img_tag.get_attribute('src')
-		if str(src).find('star.gif') == -1:
-			continue
-
-		driver.execute_script("arguments[0].click();", a_tag)
-		break
+		a_tags = tag.find_elements_by_tag_name("a")
+		for a_tag in a_tags:
+			img_tags = a_tag.find_elements_by_tag_name("img")
+			for img_tag in img_tags:
+				src = img_tag.get_attribute('src')
+				if str(src).find('star.gif') > -1:
+					driver.execute_script("arguments[0].click();", a_tag)
+					find = True
+					break
+			if find == True:
+				break
+		if find == True:
+			break
 
 	except NoSuchElementException:
 		continue
