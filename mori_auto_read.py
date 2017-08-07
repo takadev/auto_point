@@ -17,22 +17,35 @@ for tag in a_list:
 	href = tag.get_attribute('href')
 	links.append(str(href))
 
+bouns_url = ""
+find_bouns = False
 for link in links:
 	print(link)
 	driver.get(link)
+	try:
+		ul_tag = driver.find_element_by_css_selector("ul.new__list")
+	except NoSuchElementException:
+		continue
+		
+	li_tags = ul_tag.find_elements_by_tag_name("li")
+	if len(li_tags) <= 0:
+		continue
 
-	ul_tag = driver.find_element_by_css_selector("ul.new__list")
-	li_tag = ul_tag.find_elements_by_tag_name("li")[0]
+	if find_bouns == False:
+		bouns_tag = li_tags[1].find_element_by_tag_name("a")
+		if bouns_tag.text.find("ボーナス") > -1:
+			bouns_url = bouns_tag.get_attribute('href')
+			find_bouns = True
+
+	li_tag = li_tags[0]
 	a_tag = li_tag.find_element_by_tag_name("a")
 	href = a_tag.get_attribute('href')
 	driver.get(href)
-	sleep(1)
 
 	sec = driver.find_element_by_css_selector("section.entrance")
 	div_tag = sec.find_element_by_css_selector("div.button__layer")
 	element = div_tag.find_element_by_tag_name("a")
 	driver.execute_script("arguments[0].click();", element)
-	sleep(1)
 
 	driver.switch_to.window(driver.window_handles[1])
 	try:
@@ -46,5 +59,12 @@ for link in links:
 
 	driver.close()
 	driver.switch_to.window(driver.window_handles[0])
+
+if find_bouns == True:
+	driver.get(bouns_url)
+	sec = driver.find_element_by_css_selector("section.entrance")
+	div_tag = sec.find_element_by_css_selector("div.button__layer")
+	element = div_tag.find_element_by_tag_name("a")
+	driver.execute_script("arguments[0].click();", element)
 
 driver.quit()

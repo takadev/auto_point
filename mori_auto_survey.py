@@ -5,6 +5,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
 from time import sleep
 
 driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
@@ -23,9 +24,14 @@ for tag in a_tags:
 	links.append(str(tag.get_attribute('href')))
 
 for link in links:
-	sleep(1)
-	driver.get(link)
-	sleep(1)
+	try :
+		driver.get(link)
+	except TimeoutException:
+		try:
+			driver.get(link)
+		except TimeoutException:
+			continue
+
 	driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
 	div_tag = driver.find_element_by_css_selector("div.attention")
 	p_tags = div_tag.find_elements_by_tag_name("p")

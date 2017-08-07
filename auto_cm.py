@@ -34,7 +34,8 @@ for link in links:
 	sleep(1)
 	video = driver.find_element_by_tag_name("video")
 	while True:
-		driver.execute_script("arguments[0].click();", video)
+		video.click()
+		# driver.execute_script("arguments[0].click();", video)
 		sleep(10)
 
 driver.quit()	

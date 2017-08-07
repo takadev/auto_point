@@ -16,7 +16,12 @@ url = "http://www.voicenote.jp/mypage/info.php"
 driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
 driver.get(login_url)
 
-form = driver.find_element_by_tag_name('form')
+try:
+	form = driver.find_element_by_tag_name('form')
+except NoSuchElementException:
+	driver.quit()
+	sys.exit()
+	
 for tag in form.find_elements_by_tag_name('input'):
 	name = tag.get_attribute('name')
 	if name == "login_email":
