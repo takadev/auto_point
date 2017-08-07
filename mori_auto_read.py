@@ -63,8 +63,10 @@ for link in links:
 if find_bouns == True:
 	driver.get(bouns_url)
 	sec = driver.find_element_by_css_selector("section.entrance")
-	div_tag = sec.find_element_by_css_selector("div.button__layer")
-	element = div_tag.find_element_by_tag_name("a")
-	driver.execute_script("arguments[0].click();", element)
+	a_tags = sec.find_elements_by_tag_name("a")
+	for tag in a_tags:
+		if tag.text.find("ボーナス") > -1:
+			driver.execute_script("arguments[0].click();", tag)
+			break
 
 driver.quit()
