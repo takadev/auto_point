@@ -62,13 +62,17 @@ while True:
 	sleep(1)
 
 for link in links:
+	print(link)
 	driver.get(link)
 	sleep(1)
 
 	while True:
-		form = driver.find_element_by_tag_name("form")
-		tbody = form.find_element_by_tag_name("tbody")
-		tr_tags = tbody.find_elements_by_tag_name("tr")
+		try:
+			form = driver.find_element_by_tag_name("form")
+			tbody = form.find_element_by_tag_name("tbody")
+			tr_tags = tbody.find_elements_by_tag_name("tr")
+		except NoSuchElementException:
+			break
 
 		for tag in tr_tags:
 			try:
