@@ -10,7 +10,7 @@ class Rlogin:
 	BASE_PATH = '/Users/TK/project/auto_point/'
 	CONFIG_INI = BASE_PATH + 'config.ini'
 	DRIVER = BASE_PATH + 'chromedriver'
-	AD_EXT = BASE_PATH + '3.15.0_0.crx'
+	AD_EXT = BASE_PATH + 'Ad_block.crx'
 
 	def __init__(self, login_url, section):
 		self.login_url = login_url
@@ -25,6 +25,10 @@ class Rlogin:
 			driver.close()
 			driver.switch_to.window(driver.window_handles[0])
 
+		return driver
+
+	def get_driver_no_ext(self):
+		driver = webdriver.Chrome(self.DRIVER)
 		return driver
 
 	def login(self, driver):

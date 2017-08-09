@@ -4,12 +4,14 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import StaleElementReferenceException
 from time import sleep
 
-driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
 login_url = "https://ssl.realworld.jp/auth/?site=gendama_jp&rid=&af=&frid=&token=&goto=http%3A%2F%2Fmrga.service-navi.jp%2Fsquare%2Fvotes"
 rloginCls = rlogin.Rlogin(login_url, "settings")
+driver = rloginCls.get_driver_no_ext()
 driver = rloginCls.login(driver)
+driver.get("http://ssl.realworld.jp/auth/?site=service_navi_jp&goto=http%3A%2F%2Fmrga.service-navi.jp%2Fsquare%2Fvotes")
 sleep(1)
 
 div_tag = driver.find_element_by_css_selector("div.enquete_box")
@@ -75,9 +77,12 @@ for link in links:
 					sleep(1)
 					driver.switch_to.window(driver.window_handles[0])
 
-					div_tag = driver.find_element_by_css_selector("div.button__box")
-					tag = div_tag.find_element_by_tag_name("a")
-					driver.execute_script("arguments[0].click();", tag)
+					try:
+						div_tag = driver.find_element_by_css_selector("div.button__box")
+						tag = div_tag.find_element_by_tag_name("a")
+						driver.execute_script("arguments[0].click();", tag)
+					except NoSuchElementException:
+						pass
 					break
 
 driver.quit()
