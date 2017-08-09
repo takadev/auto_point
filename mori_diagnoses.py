@@ -7,9 +7,9 @@ from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common.exceptions import TimeoutException
 from time import sleep
 
-driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
 login_url = "https://ssl.realworld.jp/auth/?site=gendama_jp&rid=&af=&frid=&token=&goto=http%3A%2F%2Fmrga.service-navi.jp%2Fsquare%2Fdiagnoses"
 rloginCls = rlogin.Rlogin(login_url, "settings")
+driver = rloginCls.get_driver()
 driver = rloginCls.login(driver)
 
 div_tag = driver.find_element_by_css_selector("div.enquete_box")

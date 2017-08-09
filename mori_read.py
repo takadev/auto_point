@@ -5,9 +5,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
-driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
 login_url = "http://ssl.realworld.jp/auth/?site=service_navi_jp&goto=http%3A%2F%2Fmrga.service-navi.jp%2Fsquare%2Farticles"
 rloginCls = rlogin.Rlogin(login_url, "settings")
+driver = rloginCls.get_driver()
 driver = rloginCls.login(driver)
 
 antena = driver.find_element_by_css_selector("div.enquete_box")

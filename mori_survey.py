@@ -1,16 +1,15 @@
 import sys
 import rlogin
 from selenium import webdriver
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
 from time import sleep
 
-driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
 login_url = "http://ssl.realworld.jp/auth/?site=service_navi_jp&goto=http%3A%2F%2Fmrga.service-navi.jp%2F"
 rloginCls = rlogin.Rlogin(login_url, "settings")
+driver = rloginCls.get_driver()
 driver = rloginCls.login(driver)
 
 survey_url = "http://mrga.service-navi.jp/square/surveys"

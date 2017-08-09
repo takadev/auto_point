@@ -5,9 +5,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
-driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
 login_url = "https://ssl.realworld.jp/auth/?site=gendama_jp&rid=&af=&frid=&token=&goto=http%3A%2F%2Fwww.gendama.jp%2Fshufoo"
 rloginCls = rlogin.Rlogin(login_url, "settings")
+driver = rloginCls.get_driver()
 driver = rloginCls.login(driver)
 
 form = driver.find_elements_by_tag_name('form')[0]

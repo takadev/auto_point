@@ -5,9 +5,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
-driver = webdriver.Chrome('/Users/TK/project/auto_point/chromedriver')
 login_url = "http://ssl.realworld.jp/auth/?site=monow_jp&goto=http%3A%2F%2Fmonow.jp%2F&control=http%3A%2F%2Fmonow.jp%2Frws_session"
 rloginCls = rlogin.Rlogin(login_url, "settings")
+driver = rloginCls.get_driver()
 driver = rloginCls.login(driver)
 
 ul_tag = driver.find_element_by_css_selector("ul#timeline")
