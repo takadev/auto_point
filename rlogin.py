@@ -50,3 +50,25 @@ class Rlogin:
 				break
 
 		return driver
+
+	def login_mop(self, driver):
+		inifile = configparser.SafeConfigParser()
+		inifile.read(self.CONFIG_INI)
+
+		driver.get(self.login_url)
+		form = driver.find_elements_by_tag_name('form')[0]
+		for tag in form.find_elements_by_tag_name('input'):
+			name = tag.get_attribute('name')
+			if name == "mail":
+				tag.send_keys(inifile.get(self.section, 'id'))
+			elif name == "pass":
+				tag.send_keys(inifile.get(self.section, 'pass'))
+
+		buttons = driver.find_elements_by_tag_name("button")
+		for tag in buttons:
+			type = tag.get_attribute('type')
+			if type == "submit":
+				driver.execute_script("arguments[0].click();", tag)
+				break
+
+		return driver
