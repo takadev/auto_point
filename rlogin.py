@@ -18,9 +18,11 @@ class Rlogin:
 
 	def get_driver(self):
 		chrome_options = Options()
+		# chrome_options.add_argument('--headless')
 		chrome_options.add_extension(self.AD_EXT)
 		driver = webdriver.Chrome(self.DRIVER, chrome_options=chrome_options)
-		sleep(15)
+		sleep(12)
+		driver.set_page_load_timeout(30)
 		if len(driver.window_handles) >= 2:
 			driver.close()
 			driver.switch_to.window(driver.window_handles[0])
