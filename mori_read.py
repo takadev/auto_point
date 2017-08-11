@@ -3,6 +3,7 @@ import rlogin
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
 from time import sleep
 
 login_url = "http://ssl.realworld.jp/auth/?site=service_navi_jp&goto=http%3A%2F%2Fmrga.service-navi.jp%2Fsquare%2Farticles"
@@ -56,6 +57,8 @@ for link in links:
 		driver.get(href)
 	except NoSuchElementException:
 		pass
+	except TimeoutException:
+		continue
 
 	driver.close()
 	driver.switch_to.window(driver.window_handles[0])
