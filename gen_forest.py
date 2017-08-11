@@ -7,7 +7,7 @@ from time import sleep
 
 login_url = "https://ssl.realworld.jp/auth/?site=gendama_jp&rid=&af=&frid=&token=&goto=http%3A%2F%2Fwww.gendama.jp%2Fforest%2F"
 rloginCls = rlogin.Rlogin(login_url, "settings")
-driver = rloginCls.get_driver()
+driver = rloginCls.get_driver_no_ext()
 driver = rloginCls.login(driver)
 
 article = driver.find_element_by_tag_name("article")

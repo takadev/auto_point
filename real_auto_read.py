@@ -10,25 +10,37 @@ rloginCls = rlogin.Rlogin(login_url, "settings")
 driver = rloginCls.get_driver()
 driver = rloginCls.login(driver)
 
-read_url = "http://realworld.jp/contents/rec"
-driver.get(read_url)
-sec = driver.find_element_by_css_selector("section#recommend")
-a_list = sec.find_elements_by_tag_name("a")
+read_url = "http://realworld.jp/contents/rec/page/"
+page = 1
 links = []
 cnt = 1
-for tag in a_list:
-	if cnt > 5:
+while True:
+	if cnt > 5 or page > 30:
 		break
-	cls = tag.get_attribute("class")
-	if str(cls) == "":
-		continue
 
-	if str(cls).find('unable') > -1:
-		continue
+	read_page_url = read_url + str(page)
+	driver.get(read_page_url)
+	sec = driver.find_element_by_css_selector("section#recommend")
+	a_list = sec.find_elements_by_tag_name("a")
 
-	href = tag.get_attribute('href')
-	links.append(str(href))
-	cnt += 1
+	for tag in a_list:
+		if cnt > 5:
+			break
+		cls = tag.get_attribute("class")
+		if str(cls) == "":
+			continue
+
+		if str(cls).find('unable') > -1:
+			continue
+
+		if str(cls).find('clearfix') <= -1:
+			continue
+
+		href = tag.get_attribute('href')
+		links.append(str(href))
+		cnt += 1
+	page += 1
+
 
 for link in links:
 	print(link)
