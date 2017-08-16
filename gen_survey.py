@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
 from time import sleep
 
 login_url = "https://ssl.realworld.jp/auth/?site=gendama_jp&rid=&af=&frid=&token=&goto=http%3A%2F%2Fwww.gendama.jp%2Fsurvey%2F"
@@ -90,12 +91,16 @@ for link in gm_links:
 					pass
 
 		buttons = driver.find_elements_by_tag_name("button")
-		for tag in buttons:
-			type = tag.get_attribute("type")
-			if type == "submit":
-				driver.execute_script("arguments[0].click();", tag)
-				driver.switch_to.window(driver.window_handles[0])
-				break
+		try:
+			for tag in buttons:
+
+					type = tag.get_attribute("type")
+					if type == "submit":
+						driver.execute_script("arguments[0].click();", tag)
+						driver.switch_to.window(driver.window_handles[0])
+						break
+		except TimeoutException:
+			continue
 
 
 driver.quit()
